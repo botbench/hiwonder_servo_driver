@@ -5,4 +5,8 @@ add_executable (hiwonderTest test.cxx)
 # Link the executable to the Hello library. Since the Hello library has
 # public include directories we will use those link directories when building
 # helloDemo
-target_link_libraries (hiwonderTest LINK_PUBLIC Hiwonder)
+target_link_libraries(hiwonderTest 
+    PRIVATE Hiwonder
+	PRIVATE serial
+	PRIVATE cactus_rt
+)
