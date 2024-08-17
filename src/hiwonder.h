@@ -1,12 +1,12 @@
 #ifndef __HIWONDER_H__
 #define __HIWONDER_H__
 
-#include <SerialStream.h>
-#include <SerialPort.h>
 #include <string>
+#include <algorithm>
+#include <vector>
 
 #include "servo_commands.h"
-#include "comms_handler.h"
+
 namespace hiwonder_servo
 {
     class HiwonderServoController
@@ -29,19 +29,18 @@ namespace hiwonder_servo
 
     private:
         // LibSerial::SerialStream *serialStream;
-        LibSerial::SerialPort *serialPort;
         std::string portName;
 
         // void setTX();
         // void setRX();
 
-        void writeBus(LibSerial::DataBuffer &data);
-        void readRBus(LibSerial::DataBuffer &data);
+        void writeBus(std::vector<unsigned char> &data);
+        void readRBus(std::vector<unsigned char> &data);
 
         unsigned int angleToServoPos(double angle);
-        unsigned char getCheckSum(LibSerial::DataBuffer &data);
+        unsigned char getCheckSum(std::vector<unsigned char> &data);
 
-        void buildPacket(LibSerial::DataBuffer &data, enum SERVO_CMD cmd, int busid);
+        void buildPacket(std::vector<unsigned char> &data, enum SERVO_CMD cmd, int busid);
 
     }; // end class HiwonderServoController
 } // end namespace hiwonder_servo

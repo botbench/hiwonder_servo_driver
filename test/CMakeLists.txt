@@ -7,6 +7,4 @@ add_executable (hiwonderTest test.cxx)
 # helloDemo
 target_link_libraries(hiwonderTest 
     PRIVATE Hiwonder
-	PRIVATE serial
-	PRIVATE cactus_rt
 )

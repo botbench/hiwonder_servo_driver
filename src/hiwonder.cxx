@@ -1,8 +1,6 @@
-#include <SerialStream.h>
-// #include <JetsonGPIO.h>
-
-#include <iostream>
 #include <algorithm>
+#include <iostream>
+
 #include <cmath>
 #include <iomanip>
 
@@ -52,8 +50,8 @@ HiwonderServoController::HiwonderServoController(std::string _portname)
 {
 	portName = _portname;
 
-	cactus_rt::ThreadConfig commsHandlerThreadConfig;
-	auto commsHandler = new CommsHandlerThread(portName, LibSerial::BaudRate::BAUD_115200, commsHandlerThreadConfig);
+	// cactus_rt::ThreadConfig commsHandlerThreadConfig;
+	// auto commsHandler = new CommsHandlerThread(portName, LibSerial::BaudRate::BAUD_115200, commsHandlerThreadConfig);
 
 	// serialPort = new SerialPort(portName, BaudRate::BAUD_115200);
 	// serialPort->SetSerialPortBlockingStatus(true);
@@ -78,7 +76,7 @@ HiwonderServoController::~HiwonderServoController()
 
 	// GPIO::cleanup();
 
-	delete serialPort;
+	// delete serialPort;
 	// delete serialStream;
 }
 
@@ -209,7 +207,7 @@ void HiwonderServoController::setRange(int busid, double minangle, double maxang
 // }
 
 // Write to the servo bus
-void HiwonderServoController::writeBus(LibSerial::DataBuffer &data)
+void HiwonderServoController::writeBus(std::vector<unsigned char> &data)
 {
 	// setTX();
 	// std::cout << "TX: ";
@@ -227,7 +225,7 @@ void HiwonderServoController::writeBus(LibSerial::DataBuffer &data)
 }
 
 // Read from the servo bus
-void HiwonderServoController::readRBus(LibSerial::DataBuffer &data)
+void HiwonderServoController::readRBus(std::vector<unsigned char> &data)
 {
 	// setRX();
 	// std::cout << "RX: ";
@@ -243,7 +241,7 @@ unsigned int HiwonderServoController::angleToServoPos(double angle)
 	return (unsigned int)std::clamp(round(angle / 0.24), 0.0, 1000.0);
 }
 
-unsigned char HiwonderServoController::getCheckSum(LibSerial::DataBuffer &data)
+unsigned char HiwonderServoController::getCheckSum(std::vector<unsigned char> &data)
 {
 
 	unsigned char checksum = 0;
@@ -259,7 +257,7 @@ unsigned char HiwonderServoController::getCheckSum(LibSerial::DataBuffer &data)
 	return ~checksum;
 }
 
-void HiwonderServoController::buildPacket(LibSerial::DataBuffer &data, enum SERVO_CMD cmd, int busid)
+void HiwonderServoController::buildPacket(std::vector<unsigned char> &data, enum SERVO_CMD cmd, int busid)
 {
 	data.resize(servoCommands[cmd].cmd_length + 3);
 	data[0] = SERVO_CMD_HEADER;
