@@ -13,6 +13,11 @@ CommsHandlerThread::CommsHandlerThread(std::string portname, BaudRate rate, cact
     return;
 }
 
+CommsHandlerThread::~CommsHandlerThread()
+{
+    return;
+}
+
 void CommsHandlerThread::Run()
 {
     while (!this->StopRequested())
